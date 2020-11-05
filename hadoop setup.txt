@@ -1,15 +1,24 @@
 Hadoop setup in AWS EC2 instances.
 
 
-Now is the world of Big Data. Every company by now has collected tons of data since the dawn of cheap hard disks. However now comes the age to analyse it and make it useful for lots of business cases. The problem and the most critical challenge is to analyse such huge sets of data within a short period of time. To achieve this particaular goal, HADOOP was developed. 
+Now is the world of Big Data. Every company by now has collected tons of data since the dawn of cheap hard disks. 
+However now comes the age to analyse it and make it useful for lots of business cases. 
+The problem and the most critical challenge is to analyse such huge sets of data within a short period of time. 
+To achieve this particaular goal, HADOOP was developed. 
 
-The most comsuming time is to read the data serially. To solve this issue, engineers came up with the idea of reading data in parallel using distributed file systems and then doing batch analysis. Hence Hadoop came into existence. Hadoop has four main components.
+The most comsuming time is to read the data serially.
+To solve this issue, engineers came up with the idea of reading data in parallel using distributed file systems and then doing batch analysis. 
+Hence Hadoop came into existence. Hadoop has four main components.
 
 Distributed file system (way to store the data in different storage devices)
-MapReduce (Map: takes input from different data sources as <key,value> pairs and produces another set of intermediate <key,value> pairs as output after some processes. Reduce: uses the output from the mappers and aggregates them for that key.)
+MapReduce (Map: takes input from different data sources as <key,value> pairs and produces another set of intermediate <key,value> pairs as output after some processes.
+Reduce: uses the output from the mappers and aggregates them for that key.)
 Hadoop Common (tools to read data from the hadoop file system)
 YARN (resource manager for data storage and analysis)
-Hadoop can easily be used by a readymade service called AWS EMR. However it can be costlier than setting up using just EC2 because EMR charges you not only for EMR service but also in addition for the EC2 instances being used for the EMR. That being said EMR is a better option if time is the constraint rather than money. In this blog we will focus on the case where money is the main issue and hence will show how to setup hadoop using just multiple EC2 instances in AWS or using any mutiple instances.
+Hadoop can easily be used by a readymade service called AWS EMR. 
+However it can be costlier than setting up using just EC2 because EMR charges you not only for EMR service but also in addition for the EC2 instances being used for the EMR. 
+That being said EMR is a better option if time is the constraint rather than money. 
+In this blog we will focus on the case where money is the main issue and hence will show how to setup hadoop using just multiple EC2 instances in AWS or using any mutiple instances.
 
 This article is based on Ubuntu (18.04.3 LTS).
 
@@ -49,9 +58,11 @@ $env
 
 If you are using AWS, then create an image for this instance because we need to launch more instances with the same settings installed.
 
-(if AWS is being used) Launch DataNode instances using the image and name them datanode1 and datanode2. Please note that these instances uses the same pem file for ssh access. Also enable public ips for every node (that will help to access datanodes from web UI).
+(if AWS is being used) Launch DataNode instances using the image and name them datanode1 and datanode2.
+Please note that these instances uses the same pem file for ssh access. Also enable public ips for every node (that will help to access datanodes from web UI).
 
-We now need to make sure that namenode instance can communicate to the datanode instances over ssh without password. To achieve that we need to create a public key using ssh-keygen and then copy it to the ~/.ssh/authorized_keys file of the datanodes instance and as well as for the namenode as well.
+We now need to make sure that namenode instance can communicate to the datanode instances over ssh without password. 
+To achieve that we need to create a public key using ssh-keygen and then copy it to the ~/.ssh/authorized_keys file of the datanodes instance and as well as for the namenode as well.
 Create a public key for ssh.
 
 $ssh-keygen -f ~/.ssh/id_rsa -t rsa -P ""
@@ -151,12 +162,15 @@ Change to hadoop directory by $cd $HADOOP_CONF_DIR and add the following to hdfs
   </property>
 </configuration>
 
-The data in each datanode is replicated to all datanodes and this acts as a failsafe option in cases where one of the node fails and stops responding. dfs.replication value sets the number of times data needs to be replicated across all datanodes. dfs.namenode.name.dir sets the location of keeping the namenode data. Since this location does not exist, we need to create one by:
+The data in each datanode is replicated to all datanodes and this acts as a failsafe option in cases where one of the node fails and stops responding.
+dfs.replication value sets the number of times data needs to be replicated across all datanodes.
+dfs.namenode.name.dir sets the location of keeping the namenode data. Since this location does not exist, we need to create one by:
 
 $sudo mkdir -p $HADOOP_HOME/data/hdfs/namenode
  
 
-Create a file called masters in HADOOP_CONF_DIR. This file will contain the hostname of master. This file sets the location of the Secondary namenode. In this case, it will be the namenode hostname.
+Create a file called masters in HADOOP_CONF_DIR. This file will contain the hostname of master. 
+This file sets the location of the Secondary namenode. In this case, it will be the namenode hostname.
 
 <namenode_hostname>
 
