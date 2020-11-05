@@ -56,6 +56,7 @@ We now need to make sure that namenode instance can communicate to the datanode 
 Create a public key for ssh.
 
 $ssh-keygen -f ~/.ssh/id_rsa -t rsa -P ""
+
 $cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 Add the following to the .ssh/config file of namenode instance.
