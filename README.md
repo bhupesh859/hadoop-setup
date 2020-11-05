@@ -16,30 +16,42 @@ This article is based on Ubuntu (18.04.3 LTS).
 
 Instance setup
 Launch an instance and install the following dependencies.
+
 $sudo apt-get update -y
+
 $sudo apt-get upgrade -y
+
 $sudo apt-get install openjdk-11-jdk-headless -y
+
 $wget https://archive.apache.org/dist/hadoop/common/hadoop-3.3.0/hadoop-3.3.0.tar.gz
+
 $sudo tar zxvf hadoop-* -C /usr/local
+
 $sudo mv /usr/local/hadoop-* /usr/local/hadoop
+
 (Note: Update the java and the hadoop url with the latest version)
 
 
 Add the following environment variables.
+
 # Add environment variables in bashrc
  
 $vim ~/.bashrc
 
 # Insert the following lines in bashrc file
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
 export PATH=$PATH:$JAVA_HOME/bin
 
 export HADOOP_HOME=/usr/local/hadoop
+
 export PATH=$PATH:$HADOOP_HOME/bin
+
 export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop
 
 
 # Update the current session with new environment variable.
+
 $source ~/.bashrc
 
 # Check if you can see the new variables.
@@ -61,15 +73,25 @@ $cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 Add the following to the .ssh/config file of namenode instance.
 
+
 Host namenode
+
  HostName <public DNS of namenode instance>
+ 
  User ubuntu
+ 
 Host datanode1
+ 
  HostName <public DNS of datanode1 instance>
+ 
  User ubuntu
+ 
 Host datanode2
+ 
  HostName <public DNS of datanode2 instance>
+ 
  User ubuntu
+ 
  
 Copy the public key (id_rsa.pub) to the ~/.ssh/authorized_keys file of datanode instances and then try to access the datanodes from namenode instance using ssh.
 
